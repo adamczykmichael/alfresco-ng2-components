@@ -64,7 +64,12 @@
             </div>
 
             <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
-                <adf-cloud-group fxFlex #groupInput *ngIf="currentUser" [mode]="'multiple'" [appName]="appName" (selectGroup)="onSelectGroup($event)" (removeGroup)="onRemoveGroup($event)"></adf-cloud-group>
+                <adf-cloud-group fxFlex #groupInput *ngIf="currentUser" 
+                    [mode]="'multiple'" 
+                    [title]="'ADF_CLOUD_TASK_LIST.START_TASK.FORM.LABEL.CANDIDATE_GROUP'"
+                    [appName]="appName"
+                    (selectGroup)="onSelectGroup($event)"
+                    (removeGroup)="onRemoveGroup($event)"></adf-cloud-group>
                 <div fxFlex></div>
             </div>
     </mat-card-content>
@@ -80,7 +85,7 @@
             </button>
             <button
                 color="primary"
-                type="submit" [disabled]="dateError || !taskForm.valid || submitted || assignee.hasError()"
+                type="submit" [disabled]="dateError || !taskForm.valid || submitted || assignee.hasError() || candidateGroups.hasError()"
                 mat-button
                 id="button-start">
                 {{'ADF_CLOUD_TASK_LIST.START_TASK.FORM.ACTION.START'|translate}}
