@@ -60,7 +60,11 @@
                         </div>
                     </div>
                 </mat-form-field>
-                <adf-cloud-people fxFlex #peopleInput *ngIf="currentUser" [appName]="appName" [preSelectUsers]="[currentUser]" (selectUser)="onAssigneeSelect($event)" (removeUser)="onRemoveUser()"></adf-cloud-people>
+                <adf-cloud-people fxFlex #peopleInput *ngIf="currentUser"
+                    [appName]="appName"
+                    [preSelectUsers]="[currentUser]"
+                    (selectUser)="onAssigneeSelect($event)"
+                    (removeUser)="onRemoveUser()"></adf-cloud-people>
             </div>
 
             <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
