@@ -100,6 +100,12 @@ export class ContentNodeSelectorPanelComponent implements OnInit, PaginatedCompo
     @Input()
     breadcrumbTransform: (node) => any;
 
+    /** Custom modifier option
+     * Default will be modifiedByUser
+     */
+    @Input()
+    modifier: string;
+
     /** Emitted when the user has chosen an item. */
     @Output()
     select: EventEmitter<Node[]> = new EventEmitter<Node[]>();
@@ -416,6 +422,14 @@ export class ContentNodeSelectorPanelComponent implements OnInit, PaginatedCompo
                 .then((documentLibrary) => {
                     this.documentList.performCustomSourceNavigation(documentLibrary);
                 });
+        }
+    }
+
+    getModifier() {
+        if (this.modifier) {
+            return `${this.modifier}.displayName`;
+        } else {
+            return `modifiedByUser.displayName`;
         }
     }
 }
