@@ -6,12 +6,15 @@
         (action)="onProcessFilterAction($event)">
     </adf-cloud-edit-process-filter>
     <div fxLayout="column" fxFlex fxLayoutAlign="space-between" *ngIf="editedFilter">
-        <adf-cloud-process-list fxFlex class="adf-cloud-layout-overflow"
-                                [applicationName]="editedFilter.appName"
-                                [status]="editedFilter.state"
-                                [sorting]="sortArray"
-                                (rowClick)="onRowClick($event)"
-                                #processCloud>
+        <adf-cloud-process-list 
+            fxFlex class="adf-cloud-layout-overflow"
+            [applicationName]="editedFilter.appName"
+            [status]="editedFilter.state"
+            [sorting]="sortArray"
+            (rowClick)="onRowClick($event)"
+            [multiselect]="multiselect"
+            (rowsSelected)="onRowsSelected($event)"
+            #processCloud>
             <data-columns>
                 <data-column key="entry.id" title="Id"></data-column>
                 <data-column key="entry.name" title="Name"></data-column>
@@ -19,7 +22,18 @@
                 <data-column key="entry.startDate" title="Start Date" type="date" format="timeAgo"></data-column>
             </data-columns>
         </adf-cloud-process-list>
-        <adf-pagination [target]="processCloud" (changePageSize)="onChangePageSize($event)">
+        <adf-pagination 
+            [target]="processCloud" 
+            (changePageSize)="onChangePageSize($event)"
+            (nextPage)="resetSelectedRows()"
+            (prevPage)="resetSelectedRows()">
         </adf-pagination>
     </div>
+</div>
+
+<div *ngIf="testingMode">
+    Selected rows:
+    <ul>
+        <li *ngFor="let row of selectedRows">{{ row.id }}</li>
+    </ul>
 </div>

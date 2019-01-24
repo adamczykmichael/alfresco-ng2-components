@@ -594,5 +594,8 @@
                 }
             ]
         }
+    },
+    "app-cloud-layout": {
+        "testing-mode": true
     }
 }

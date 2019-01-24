@@ -24,7 +24,7 @@ import {
 } from '@alfresco/adf-process-services-cloud';
 
 import { ActivatedRoute } from '@angular/router';
-import { UserPreferencesService } from '@alfresco/adf-core';
+import { UserPreferencesService, AppConfigService } from '@alfresco/adf-core';
 import { CloudLayoutService } from './services/cloud-layout.service';
 
 @Component({
@@ -45,13 +45,17 @@ export class ProcessesCloudDemoComponent implements OnInit {
     filterId: string = '';
     sortArray: any = [];
     selectedRow: any;
+    multiselect: boolean;
+    selectedRows: string[] = [];
+    testingMode = false;
 
     editedFilter: ProcessFilterCloudModel;
 
     constructor(
         private route: ActivatedRoute,
         private cloudLayoutService: CloudLayoutService,
-        private userPreference: UserPreferencesService) {
+        private userPreference: UserPreferencesService,
+        private config: AppConfigService) {
     }
 
     ngOnInit() {
@@ -65,10 +69,23 @@ export class ProcessesCloudDemoComponent implements OnInit {
             this.onFilterChange(params);
             this.filterId = params.id;
         });
+
+        this.testingMode = this.config.get('app-cloud-layout.testing-mode');
+
+        this.cloudLayoutService.getCurrentSelectionParam()
+            .subscribe(
+                (selection) => {
+                    this.multiselect = selection.multiselect;
+                }
+            );
     }
 
     onChangePageSize(event) {
         this.userPreference.paginationSize = event.maxItems;
+    }
+
+    resetSelectedRows() {
+        this.selectedRows = [];
     }
 
     onRowClick($event) {
@@ -81,6 +98,10 @@ export class ProcessesCloudDemoComponent implements OnInit {
     }
 
     onProcessFilterAction(filter: any) {
-        this.cloudLayoutService.setCurrentProcessFilterParam({id: filter.id});
-     }
+        this.cloudLayoutService.setCurrentProcessFilterParam({ id: filter.id });
+    }
+
+    onRowsSelected(nodes) {
+        this.selectedRows = nodes.map((node) => node.obj.entry);
+    }
 }

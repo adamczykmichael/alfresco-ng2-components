@@ -17,7 +17,7 @@
 
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { TaskListCloudComponent, TaskListCloudSortingModel, TaskFilterCloudModel } from '@alfresco/adf-process-services-cloud';
-import { UserPreferencesService } from '@alfresco/adf-core';
+import { UserPreferencesService, AppConfigService } from '@alfresco/adf-core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CloudLayoutService } from './services/cloud-layout.service';
 
@@ -42,12 +42,16 @@ export class TasksCloudDemoComponent implements OnInit {
     editedFilter: TaskFilterCloudModel;
 
     filterId;
+    multiselect: boolean;
+    selectedRows: string[] = [];
+    testingMode = false;
 
     constructor(
         private cloudLayoutService: CloudLayoutService,
         private route: ActivatedRoute,
         private router: Router,
-        private userPreference: UserPreferencesService) {
+        private userPreference: UserPreferencesService,
+        private config: AppConfigService) {
     }
 
     ngOnInit() {
@@ -61,14 +65,33 @@ export class TasksCloudDemoComponent implements OnInit {
             this.onFilterChange(params);
             this.filterId = params.id;
         });
+
+        this.testingMode = this.config.get('app-cloud-layout.testing-mode');
+
+        this.cloudLayoutService.getCurrentSelectionParam()
+            .subscribe(
+                (selection) => {
+                    this.multiselect = selection.multiselect;
+                }
+            );
     }
 
     onChangePageSize(event) {
         this.userPreference.paginationSize = event.maxItems;
     }
 
+    resetSelectedRows() {
+        this.selectedRows = [];
+    }
+
     onRowClick(taskId) {
-        this.router.navigate([`/cloud/${this.applicationName}/task-details/${taskId}`]);
+        if (!this.multiselect) {
+            this.router.navigate([`/cloud/${this.applicationName}/task-details/${taskId}`]);
+        }
+    }
+
+    onRowsSelected(nodes) {
+        this.selectedRows = nodes.map((node) => node.obj.entry);
     }
 
     onFilterChange(filter: any) {
