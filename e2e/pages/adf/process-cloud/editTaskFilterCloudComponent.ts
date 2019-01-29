@@ -78,4 +78,18 @@ export class EditTaskFilterCloudComponent {
         return this;
     }
 
+    clearAssignment() {
+        this.clearField(this.assignment);
+        return this;
+    }
+
+    clearField(locator) {
+        Util.waitUntilElementIsVisible(locator);
+        locator.getAttribute('value').then((result) => {
+            for (let i = result.length; i >= 0; i--) {
+                locator.sendKeys(protractor.Key.BACK_SPACE);
+            }
+        });
+    }
+
 }
