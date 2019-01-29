@@ -28,11 +28,14 @@ export class CloudLayoutComponent implements OnInit {
     displayMenu = true;
     applicationName: string;
 
+    multiselect: boolean;
+    testingMode: boolean;
+
     constructor(
         private router: Router,
         private route: ActivatedRoute,
         private cloudLayoutService: CloudLayoutService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.route.params.subscribe((params) => {
@@ -44,6 +47,18 @@ export class CloudLayoutComponent implements OnInit {
                 this.cloudLayoutService.setCurrentTaskFilterParam({ id: params.id });
             }
         });
+
+        this.cloudLayoutService.getCurrentSettings()
+            .subscribe(
+                (selection) => {
+                    if (selection.multiselect) {
+                        this.multiselect = selection.multiselect;
+                    }
+                    if (selection.testingMode) {
+                        this.testingMode = selection.testingMode;
+                    }
+                }
+            );
     }
 
     onStartTask() {
@@ -52,5 +67,19 @@ export class CloudLayoutComponent implements OnInit {
 
     onStartProcess() {
         this.router.navigate([`/cloud/${this.applicationName}/start-process/`]);
+    }
+
+    toggleMultiselect() {
+        this.multiselect = !this.multiselect;
+        this.setCurrentSettings({ multiselect: this.multiselect });
+    }
+
+    toggleTestingMode() {
+        this.testingMode = !this.testingMode;
+        this.setCurrentSettings({ testingMode: this.testingMode });
+    }
+
+    setCurrentSettings(param) {
+        this.cloudLayoutService.setCurrentSettings(param);
     }
 }

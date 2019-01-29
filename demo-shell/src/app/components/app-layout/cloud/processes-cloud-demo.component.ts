@@ -47,15 +47,14 @@ export class ProcessesCloudDemoComponent implements OnInit {
     selectedRow: any;
     multiselect: boolean;
     selectedRows: string[] = [];
-    testingMode = false;
+    testingMode: boolean;
 
     editedFilter: ProcessFilterCloudModel;
 
     constructor(
         private route: ActivatedRoute,
         private cloudLayoutService: CloudLayoutService,
-        private userPreference: UserPreferencesService,
-        private config: AppConfigService) {
+        private userPreference: UserPreferencesService) {
     }
 
     ngOnInit() {
@@ -70,12 +69,15 @@ export class ProcessesCloudDemoComponent implements OnInit {
             this.filterId = params.id;
         });
 
-        this.testingMode = this.config.get('app-cloud-layout.testing-mode');
-
-        this.cloudLayoutService.getCurrentSelectionParam()
+        this.cloudLayoutService.getCurrentSettings()
             .subscribe(
                 (selection) => {
-                    this.multiselect = selection.multiselect;
+                    if (selection.multiselect !== undefined) {
+                        this.multiselect = selection.multiselect;
+                    }
+                    if (selection.testingMode !== undefined) {
+                        this.testingMode = selection.testingMode;
+                    }
                 }
             );
     }
