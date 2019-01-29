@@ -24,7 +24,7 @@ import {
 } from '@alfresco/adf-process-services-cloud';
 
 import { ActivatedRoute } from '@angular/router';
-import { UserPreferencesService, AppConfigService } from '@alfresco/adf-core';
+import { UserPreferencesService } from '@alfresco/adf-core';
 import { CloudLayoutService } from './services/cloud-layout.service';
 
 @Component({
