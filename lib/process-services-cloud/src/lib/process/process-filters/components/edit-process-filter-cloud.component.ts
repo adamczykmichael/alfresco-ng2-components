@@ -359,18 +359,6 @@ export class EditProcessFilterCloudComponent implements OnChanges {
                 value: currentProcessFilter.processDefinitionKey || ''
             }),
             new ProcessFilterProperties({
-                label: 'ADF_CLOUD_EDIT_PROCESS_FILTER.LABEL.PROCESS_INS_ID',
-                type: 'text',
-                key: 'processInstanceId',
-                value: ''
-            }),
-            new ProcessFilterProperties({
-                label: 'ADF_CLOUD_EDIT_PROCESS_FILTER.LABEL.START_DATE',
-                type: 'date',
-                key: 'startDate',
-                value: ''
-            }),
-            new ProcessFilterProperties({
                 label: 'ADF_CLOUD_EDIT_PROCESS_FILTER.LABEL.LAST_MODIFIED',
                 type: 'date',
                 key: 'lastModified',
